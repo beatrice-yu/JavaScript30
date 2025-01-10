@@ -59,7 +59,28 @@
   <audio data-key="76" src="sounds/tink.wav"></audio>
 
 <script>
+  document.addEventListener("keydown", (event) => {
+    // Assumption is that there is only 1 audio
+    const audio = document.querySelector(`audio[data-key="${event.keyCode}"]`);
 
+    // Only do stuff if audio exists
+    if (audio) {
+      // in case multiple elements match and need to be highlighted because data attributes don't work like IDs where it needs to be unique
+      const divs = document.querySelectorAll(`div[data-key="${event.keyCode}"]`);
+      let timeout;
+      if(divs) {
+        divs.forEach(div => {
+          div.classList.add('playing');
+          timeout = setTimeout(() => {
+            clearTimeout(timeout);
+            div.classList.remove('playing');
+          }, 70);
+        });
+        audio.currentTime = 0;
+        audio.play();
+      }
+    }
+  });
 </script>
 
 
